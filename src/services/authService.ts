@@ -1,6 +1,21 @@
 import type { AuthResponse, LoginRequest, RegisterRequest, User } from '../types';
 
-const API_BASE_URL = 'http://134.209.74.19:8080/api/v1';
+// Prefer build-time Vite env var (VITE_API_BASE_URL). If missing, allow runtime injection
+// via `window.__API_BASE_URL` or fall back to an inferred host.
+const _envBase = (import.meta.env && (import.meta.env as any).VITE_API_BASE_URL) as string | undefined;
+
+declare global {
+  interface Window {
+    __API_BASE_URL?: string;
+  }
+}
+
+const _runtimeBase = typeof window !== 'undefined' ? window.__API_BASE_URL : undefined;
+const _inferredBase = typeof window !== 'undefined'
+  ? `${window.location.protocol}//${window.location.hostname}${window.location.protocol === 'http:' ? ':8080' : ''}/api/v1`
+  : 'http://127.0.0.1:8080/api/v1';
+
+const API_BASE_URL = _envBase || _runtimeBase || _inferredBase;
 
 class AuthService {
   private tokenKey = 'authToken';
