@@ -1,7 +1,7 @@
 import type { PaginatedResponse, PaginationParams } from '../types';
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://134.209.74.19:8080/api/v1';
+const API_BASE_URL = 'http://98.84.187.89:8080/api/v1';
 
 class ApiService {
   private inactivityTimer: number | null = null;
@@ -111,6 +111,8 @@ class ApiService {
     const response = await fetch(`${API_BASE_URL}${url}`, {
       ...options,
       headers,
+      // Timeout de 15 segundos por defecto si no se especifica
+      signal: options.signal || AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {

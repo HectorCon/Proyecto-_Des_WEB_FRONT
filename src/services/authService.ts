@@ -1,6 +1,6 @@
 import type { AuthResponse, LoginRequest, RegisterRequest, User } from '../types';
 
-const API_BASE_URL = 'http://134.209.74.19:8080/api/v1';
+const API_BASE_URL = 'http://98.84.187.89:8080/api/v1';
 
 class AuthService {
   private tokenKey = 'authToken';
