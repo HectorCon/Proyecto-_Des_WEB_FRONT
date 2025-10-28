@@ -31,7 +31,6 @@ import {
   Logout,
   AccountCircle,
   SupervisorAccount,
-  ChevronLeft,
   Notifications,
   Settings,
   ContactMail,

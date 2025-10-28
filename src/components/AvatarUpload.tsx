@@ -35,7 +35,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
 }) => {
   const [preview, setPreview] = useState<string | null>(currentAvatar || null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {

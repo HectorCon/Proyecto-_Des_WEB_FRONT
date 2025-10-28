@@ -3,7 +3,6 @@ import {
   Box,
   IconButton,
   Typography,
-  Paper,
   Tooltip,
   Fade,
 } from '@mui/material';
