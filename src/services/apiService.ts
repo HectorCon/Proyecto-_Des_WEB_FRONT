@@ -1,24 +1,7 @@
 import type { PaginatedResponse, PaginationParams } from '../types';
 import { authService } from './authService';
 
-// Prefer build-time Vite env var (VITE_API_BASE_URL). If it's not present in the built bundle,
-// allow a runtime injection via `window.__API_BASE_URL` (useful only if you add a small
-// script to `index.html` that sets this global). As last resort infer from the page
-// location (uses :8080 for http pages).
-const _envBase = (import.meta.env && (import.meta.env as any).VITE_API_BASE_URL) as string | undefined;
-
-declare global {
-  interface Window {
-    __API_BASE_URL?: string;
-  }
-}
-
-const _runtimeBase = typeof window !== 'undefined' ? window.__API_BASE_URL : undefined;
-const _inferredBase = typeof window !== 'undefined'
-  ? `${window.location.protocol}//${window.location.hostname}${window.location.protocol === 'http:' ? ':8080' : ''}/api/v1`
-  : 'http://127.0.0.1:8080/api/v1';
-
-const API_BASE_URL = _envBase || _runtimeBase || _inferredBase;
+const API_BASE_URL = 'http://134.209.74.19:8080/api/v1';
 
 class ApiService {
   private inactivityTimer: number | null = null;
