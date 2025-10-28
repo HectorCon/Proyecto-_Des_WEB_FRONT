@@ -1,7 +1,7 @@
 import type { PaginatedResponse, PaginationParams } from '../types';
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://3.95.198.93:8080/api/v1';
+const API_BASE_URL = 'http://134.209.74.19:8080/api/v1';
 
 class ApiService {
   private inactivityTimer: number | null = null;
