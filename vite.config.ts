@@ -16,14 +16,9 @@ export default defineConfig({
         }
       }
     },
-    // Reducir el bundle size
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
+    // Reducir el bundle size - configuración simplificada
+    minify: true,
+    target: 'es2015'
   },
   // Optimizar desarrollo para menos uso de memoria
   server: {
