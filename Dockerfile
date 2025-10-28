@@ -1,32 +1,45 @@
-# Multi-stage Dockerfile for Vite + React (TypeScript) app
+# Multi-stage Dockerfile for Vite + React (TypeScript) app - OPTIMIZED
 # Stage 1: Build the application
 FROM node:18-alpine AS build
 
+# Reduce memory usage for VPS
+ENV NODE_OPTIONS=--max-old-space-size=512
+
 WORKDIR /app
 
-# Install dependencies (copy package files first for caching)
+# Copy package files first for better caching
 COPY package.json package-lock.json* ./
 
-# If you use pnpm or yarn, adjust accordingly (this repo uses npm by default)
-RUN npm ci --silent
+# Install dependencies with optimizations
+RUN npm ci --silent --prefer-offline --no-audit --no-fund
 
-# Copy source
+# Copy source files
 COPY . .
 
-# Build the Vite app
-# Increase Node heap for large builds to avoid 'JS heap out of memory'
-# You can tune the size (4096 = 4GB) depending on your VPS available RAM
-ENV NODE_OPTIONS=--max-old-space-size=4096
-RUN npm run build
+# Build with production optimizations
+RUN npm run build && \
+    # Clean up node_modules to reduce image size
+    rm -rf node_modules && \
+    # Remove unnecessary files
+    rm -rf src && \
+    rm -rf .git && \
+    rm -rf *.md && \
+    rm -rf .eslintrc* && \
+    rm -rf tsconfig*
 
-# Stage 2: Serve with Nginx
-FROM nginx:stable-alpine
+# Stage 2: Serve with Nginx (ultra minimal)
+FROM nginx:alpine
 
 # Copy built assets from builder
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Replace default nginx conf with our SPA-friendly config
+# Replace default nginx conf with our optimized config
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Remove default nginx files to reduce size
+RUN rm -rf /etc/nginx/conf.d/default.conf.template && \
+    rm -rf /usr/share/nginx/html/index.html && \
+    rm -rf /var/cache/apk/*
 
 EXPOSE 80
 
