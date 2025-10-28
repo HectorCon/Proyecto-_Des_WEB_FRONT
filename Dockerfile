@@ -14,6 +14,9 @@ RUN npm ci --silent
 COPY . .
 
 # Build the Vite app
+# Increase Node heap for large builds to avoid 'JS heap out of memory'
+# You can tune the size (4096 = 4GB) depending on your VPS available RAM
+ENV NODE_OPTIONS=--max-old-space-size=4096
 RUN npm run build
 
 # Stage 2: Serve with Nginx
