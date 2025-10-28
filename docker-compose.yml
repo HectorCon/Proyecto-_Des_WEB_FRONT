@@ -5,32 +5,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # Add build args for optimization
-      args:
-        - BUILDKIT_INLINE_CACHE=1
     image: proyecto_escuela_frontend:latest
+    # Map host port 8081 -> container 80 to avoid conflict with an existing backend on 8080
+    # You can change the left side (host) to any free port on your VPS.
     ports:
       - "8081:80"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-    # Resource limits for VPS free tier
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.5'
-        reservations:
-          memory: 128M
-          cpus: '0.25'
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    # Health check to ensure container is working
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
 # If you have a backend to proxy to, you can add it below and connect networks
 # networks:
